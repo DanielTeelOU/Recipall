@@ -1,0 +1,22 @@
+version: '2'
+services:
+  recipall-app:
+    image: recipall
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://recipall-mysql:3306/recipall?useUnicode=true&characterEncoding=utf8&useSSL=false
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=http://recipall-elasticsearch:9200
+      - SPRING_ELASTICSEARCH_REST_URIS=http://recipall-elasticsearch:9200
+    ports:
+      - 8080:8080
+  recipall-mysql:
+    extends:
+      file: mysql.yml
+      service: recipall-mysql
+  recipall-elasticsearch:
+    extends:
+      file: elasticsearch.yml
+      service: recipall-elasticsearch
