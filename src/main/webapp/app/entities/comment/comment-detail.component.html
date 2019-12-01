@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="comment">
+            <h2><span>Comment</span> {{comment.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Comment Info</span></dt>
+                <dd>
+                    <span>{{comment.commentInfo}}</span>
+                </dd>
+                <dt><span>Date</span></dt>
+                <dd>
+                    <span>{{comment.date}}</span>
+                </dd>
+                <dt><span>Score</span></dt>
+                <dd>
+                    <span>{{comment.score}}</span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{comment.user?.id}}
+                </dd>
+                <dt><span>Recipe</span></dt>
+                <dd>
+                    <div *ngIf="comment.recipe">
+                        <a [routerLink]="['/recipe', comment.recipe?.id, 'view']">{{comment.recipe?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/comment', comment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

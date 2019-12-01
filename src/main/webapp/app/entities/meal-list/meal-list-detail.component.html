@@ -1,0 +1,35 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="mealList">
+            <h2><span>Meal List</span> {{mealList.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Recipe</span></dt>
+                <dd>
+                    <div *ngIf="mealList.recipe">
+                        <a [routerLink]="['/recipe', mealList.recipe?.id, 'view']">{{mealList.recipe?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span>Meal</span></dt>
+                <dd>
+                    <div *ngIf="mealList.meal">
+                        <a [routerLink]="['/meal', mealList.meal?.id, 'view']">{{mealList.meal?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/meal-list', mealList.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
