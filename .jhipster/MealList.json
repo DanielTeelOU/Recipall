@@ -1,0 +1,30 @@
+{
+    "name": "MealList",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "recipe",
+            "otherEntityRelationshipName": "mealList",
+            "relationshipName": "recipe",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "meal",
+            "otherEntityRelationshipName": "mealList",
+            "relationshipName": "meal",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191201195826",
+    "entityTableName": "meal_list",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

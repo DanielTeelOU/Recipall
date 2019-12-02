@@ -1,6 +1,14 @@
-import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
-import org.springframework.data.repository.CrudRepository;
+package com.csi3450.myapp.repository;
+import com.csi3450.myapp.domain.Ingredient;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
-public interface IngredientRepository extends CrudRepository<Comment, Long>{
-    
+
+/**
+ * Spring Data  repository for the Ingredient entity.
+ */
+@SuppressWarnings("unused")
+@Repository
+public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
+
 }

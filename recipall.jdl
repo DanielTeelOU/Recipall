@@ -1,0 +1,81 @@
+entity Recipe {
+	time Integer,
+    difficulty Integer,
+    rating Double,
+    steps String,
+    creationDate Instant,
+    description String,
+    name String required,
+    score Integer
+}
+
+entity RecipeList {
+	// Composite entity
+}
+
+entity Comment {
+	commentInfo String,
+    date Instant,
+    score Integer,
+    // ratedusers??
+}
+
+entity IngredientList {
+	amount Double required,
+    unit String required
+}
+
+entity Ingredient {
+	name String required,
+    imageURL String
+    // alternativeIDs??? stored in onetomany relationship
+}
+
+entity MealList {
+	// Composite entity
+}
+
+entity Meal {
+	mealName String,
+    mealDesc String
+}
+
+relationship ManyToOne {
+	Comment{user required} to User
+	Comment{recipe required} to Recipe
+}
+
+relationship ManyToOne {
+	RecipeList{user required} to User,
+	RecipeList{recipe required} to Recipe
+}
+
+relationship ManyToOne {
+	IngredientList{recipe required} to Recipe
+    IngredientList{ingredient} to Ingredient
+}
+
+relationship ManyToOne {
+	MealList{recipe} to Recipe,
+    MealList{meal} to Meal
+}
+
+relationship OneToMany {
+	Ingredient to Ingredient
+}
+
+// Set pagination options
+//paginate Recipe with infinite-scroll
+
+
+//paginate JobHistory, Employee with infinite-scroll
+//paginate Job with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+//service all with serviceImpl except Employee, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
