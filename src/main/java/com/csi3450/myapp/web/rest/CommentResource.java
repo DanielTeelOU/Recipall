@@ -3,6 +3,8 @@ package com.csi3450.myapp.web.rest;
 import com.csi3450.myapp.domain.Comment;
 import com.csi3450.myapp.repository.CommentRepository;
 import com.csi3450.myapp.repository.search.CommentSearchRepository;
+import com.csi3450.myapp.security.AuthoritiesConstants;
+import com.csi3450.myapp.security.SecurityUtils;
 import com.csi3450.myapp.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,8 +12,9 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -79,10 +82,14 @@ public class CommentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/comments")
-    public ResponseEntity<Comment> updateComment(@Valid @RequestBody Comment comment) throws URISyntaxException {
+    public ResponseEntity<?> updateComment(@Valid @RequestBody Comment comment) throws URISyntaxException {
         log.debug("REST request to update Comment : {}", comment);
         if (comment.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (comment.getUser() != null &&
+            !comment.getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin().orElse(""))) {
+            return new ResponseEntity<>("error.http.403", HttpStatus.FORBIDDEN);
         }
         Comment result = commentRepository.save(comment);
         commentSearchRepository.save(result);
@@ -101,6 +108,12 @@ public class CommentResource {
     public List<Comment> getAllComments() {
         log.debug("REST request to get all Comments");
         return commentRepository.findAll();
+    }
+
+    @GetMapping("/comments/byrecipe/{id}")
+    public List<Comment> getCommentByRecipeId(@PathVariable Long id) {
+        log.debug("REST request to get Comments by Recipe ID : {}", id);
+        return commentRepository.findByRecipeId(id);
     }
 
     /**
@@ -123,8 +136,14 @@ public class CommentResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    public ResponseEntity<?> deleteComment(@PathVariable Long id) {
         log.debug("REST request to delete Comment : {}", id);
+        Optional<Comment> comment = commentRepository.findById(id);
+        boolean ownedByCurrentUser = comment.isPresent() && comment.get().getUser() != null &&
+            comment.get().getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin().orElse(""));
+        if (!ownedByCurrentUser && !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return new ResponseEntity<>("error.http.403", HttpStatus.FORBIDDEN);
+        }
         commentRepository.deleteById(id);
         commentSearchRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
