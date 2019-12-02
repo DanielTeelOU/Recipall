@@ -1,49 +1,45 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="recipe">
-            <h2><span>Recipe</span> {{recipe.id}}</h2>
+            <h2><span>Recipe</span> {{recipe.name}}</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span>Time</span></dt>
+                <dt><span>Description</span></dt>
                 <dd>
-                    <span>{{recipe.time}}</span>
+                    <span>{{recipe.description}}</span>
                 </dd>
                 <dt><span>Difficulty</span></dt>
                 <dd>
                     <span>{{recipe.difficulty}}</span>
                 </dd>
-                <dt><span>Rating</span></dt>
+                <dt><span>Ingredients</span></dt>
                 <dd>
-                    <span>{{recipe.rating}}</span>
+                    <span>{{ingredientList.ingredient}}</span>
                 </dd>
                 <dt><span>Steps</span></dt>
                 <dd>
                     <span>{{recipe.steps}}</span>
                 </dd>
+                <dt><span>Time</span></dt>
+                <dd>
+                    <span>{{recipe.time}}</span>
+                </dd>
+<!--                <dt><span>Rating</span></dt>-->
+<!--                <dd>-->
+<!--                    <span>{{recipe.rating}}</span>-->
+<!--                </dd>-->
+<!--                <dt><span>Score</span></dt>-->
+<!--                <dd>-->
+<!--                    <span>{{recipe.score}}</span>-->
+<!--                </dd>-->
+                <dt><span>Author</span></dt>
+                <dd>
+                    {{recipe.user?.id}}
+                </dd>
                 <dt><span>Creation Date</span></dt>
                 <dd>
                     <span>{{recipe.creationDate}}</span>
-                </dd>
-                <dt><span>Description</span></dt>
-                <dd>
-                    <span>{{recipe.description}}</span>
-                </dd>
-                <dt><span>Ingredients</span></dt>
-                <dd>
-                    <span>{{ingredientList.ingredient}}</span>
-                </dd>
-                <dt><span>Name</span></dt>
-                <dd>
-                    <span>{{recipe.name}}</span>
-                </dd>
-                <dt><span>Score</span></dt>
-                <dd>
-                    <span>{{recipe.score}}</span>
-                </dd>
-                <dt><span>User</span></dt>
-                <dd>
-                    {{recipe.user?.id}}
                 </dd>
             </dl>
 
