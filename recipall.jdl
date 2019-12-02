@@ -46,6 +46,10 @@ relationship ManyToOne {
 }
 
 relationship ManyToOne {
+	Meal{user required} to User
+}
+
+relationship ManyToOne {
 	RecipeList{user required} to User,
 	RecipeList{recipe required} to Recipe
 }

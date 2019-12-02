@@ -1,8 +1,10 @@
 package com.csi3450.myapp.domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
@@ -28,6 +30,11 @@ public class Meal implements Serializable {
 
     @Column(name = "meal_desc")
     private String mealDesc;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("meals")
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -62,6 +69,19 @@ public class Meal implements Serializable {
 
     public void setMealDesc(String mealDesc) {
         this.mealDesc = mealDesc;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Meal user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

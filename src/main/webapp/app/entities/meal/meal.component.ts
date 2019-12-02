@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IMeal } from 'app/shared/model/meal.model';
+import { AccountService } from 'app/core/auth/account.service';
 import { MealService } from './meal.service';
-import { MealDeleteDialogComponent } from './meal-delete-dialog.component';
 
 @Component({
   selector: 'jhi-meal',
@@ -15,14 +16,15 @@ import { MealDeleteDialogComponent } from './meal-delete-dialog.component';
 })
 export class MealComponent implements OnInit, OnDestroy {
   meals: IMeal[];
+  currentAccount: any;
   eventSubscriber: Subscription;
   currentSearch: string;
 
   constructor(
     protected mealService: MealService,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -36,13 +38,23 @@ export class MealComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IMeal[]>) => (this.meals = res.body));
+        .pipe(
+          filter((res: HttpResponse<IMeal[]>) => res.ok),
+          map((res: HttpResponse<IMeal[]>) => res.body)
+        )
+        .subscribe((res: IMeal[]) => (this.meals = res));
       return;
     }
-    this.mealService.query().subscribe((res: HttpResponse<IMeal[]>) => {
-      this.meals = res.body;
-      this.currentSearch = '';
-    });
+    this.mealService
+      .query()
+      .pipe(
+        filter((res: HttpResponse<IMeal[]>) => res.ok),
+        map((res: HttpResponse<IMeal[]>) => res.body)
+      )
+      .subscribe((res: IMeal[]) => {
+        this.meals = res;
+        this.currentSearch = '';
+      });
   }
 
   search(query) {
@@ -60,6 +72,9 @@ export class MealComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadAll();
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.registerChangeInMeals();
   }
 
@@ -72,11 +87,6 @@ export class MealComponent implements OnInit, OnDestroy {
   }
 
   registerChangeInMeals() {
-    this.eventSubscriber = this.eventManager.subscribe('mealListModification', () => this.loadAll());
-  }
-
-  delete(meal: IMeal) {
-    const modalRef = this.modalService.open(MealDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.meal = meal;
+    this.eventSubscriber = this.eventManager.subscribe('mealListModification', response => this.loadAll());
   }
 }

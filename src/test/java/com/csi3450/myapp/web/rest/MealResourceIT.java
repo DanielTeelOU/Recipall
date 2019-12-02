@@ -2,6 +2,7 @@ package com.csi3450.myapp.web.rest;
 
 import com.csi3450.myapp.RecipallApp;
 import com.csi3450.myapp.domain.Meal;
+import com.csi3450.myapp.domain.User;
 import com.csi3450.myapp.repository.MealRepository;
 import com.csi3450.myapp.repository.search.MealSearchRepository;
 import com.csi3450.myapp.web.rest.errors.ExceptionTranslator;
@@ -95,6 +96,11 @@ public class MealResourceIT {
         Meal meal = new Meal()
             .mealName(DEFAULT_MEAL_NAME)
             .mealDesc(DEFAULT_MEAL_DESC);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        meal.setUser(user);
         return meal;
     }
     /**
@@ -107,6 +113,11 @@ public class MealResourceIT {
         Meal meal = new Meal()
             .mealName(UPDATED_MEAL_NAME)
             .mealDesc(UPDATED_MEAL_DESC);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        meal.setUser(user);
         return meal;
     }
 
@@ -286,5 +297,20 @@ public class MealResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(meal.getId().intValue())))
             .andExpect(jsonPath("$.[*].mealName").value(hasItem(DEFAULT_MEAL_NAME)))
             .andExpect(jsonPath("$.[*].mealDesc").value(hasItem(DEFAULT_MEAL_DESC)));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Meal.class);
+        Meal meal1 = new Meal();
+        meal1.setId(1L);
+        Meal meal2 = new Meal();
+        meal2.setId(meal1.getId());
+        assertThat(meal1).isEqualTo(meal2);
+        meal2.setId(2L);
+        assertThat(meal1).isNotEqualTo(meal2);
+        meal1.setId(null);
+        assertThat(meal1).isNotEqualTo(meal2);
     }
 }

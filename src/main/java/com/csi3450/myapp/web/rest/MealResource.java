@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -29,7 +29,6 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class MealResource {
 
     private final Logger log = LoggerFactory.getLogger(MealResource.class);
@@ -56,7 +55,7 @@ public class MealResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/meals")
-    public ResponseEntity<Meal> createMeal(@RequestBody Meal meal) throws URISyntaxException {
+    public ResponseEntity<Meal> createMeal(@Valid @RequestBody Meal meal) throws URISyntaxException {
         log.debug("REST request to save Meal : {}", meal);
         if (meal.getId() != null) {
             throw new BadRequestAlertException("A new meal cannot already have an ID", ENTITY_NAME, "idexists");
@@ -78,7 +77,7 @@ public class MealResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/meals")
-    public ResponseEntity<Meal> updateMeal(@RequestBody Meal meal) throws URISyntaxException {
+    public ResponseEntity<Meal> updateMeal(@Valid @RequestBody Meal meal) throws URISyntaxException {
         log.debug("REST request to update Meal : {}", meal);
         if (meal.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

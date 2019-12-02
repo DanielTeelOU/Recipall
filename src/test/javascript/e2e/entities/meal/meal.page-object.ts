@@ -5,11 +5,11 @@ export class MealComponentsPage {
   deleteButtons = element.all(by.css('jhi-meal div table .btn-danger'));
   title = element.all(by.css('jhi-meal div h2#page-heading span')).first();
 
-  async clickOnCreateButton() {
+  async clickOnCreateButton(timeout?: number) {
     await this.createButton.click();
   }
 
-  async clickOnLastDeleteButton() {
+  async clickOnLastDeleteButton(timeout?: number) {
     await this.deleteButtons.last().click();
   }
 
@@ -28,6 +28,7 @@ export class MealUpdatePage {
   cancelButton = element(by.id('cancel-save'));
   mealNameInput = element(by.id('field_mealName'));
   mealDescInput = element(by.id('field_mealDesc'));
+  userSelect = element(by.id('field_user'));
 
   async getPageTitle() {
     return this.pageTitle.getText();
@@ -49,11 +50,30 @@ export class MealUpdatePage {
     return await this.mealDescInput.getAttribute('value');
   }
 
-  async save() {
+  async userSelectLastOption(timeout?: number) {
+    await this.userSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async userSelectOption(option) {
+    await this.userSelect.sendKeys(option);
+  }
+
+  getUserSelect(): ElementFinder {
+    return this.userSelect;
+  }
+
+  async getUserSelectedOption() {
+    return await this.userSelect.element(by.css('option:checked')).getText();
+  }
+
+  async save(timeout?: number) {
     await this.saveButton.click();
   }
 
-  async cancel() {
+  async cancel(timeout?: number) {
     await this.cancelButton.click();
   }
 
@@ -70,7 +90,7 @@ export class MealDeleteDialog {
     return this.dialogTitle.getText();
   }
 
-  async clickOnConfirmButton() {
+  async clickOnConfirmButton(timeout?: number) {
     await this.confirmButton.click();
   }
 }

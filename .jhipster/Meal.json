@@ -10,7 +10,16 @@
             "fieldType": "String"
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "meal",
+            "relationshipValidateRules": "required",
+            "relationshipName": "user",
+            "otherEntityField": "id"
+        }
+    ],
     "changelogDate": "20191201195827",
     "entityTableName": "meal",
     "dto": "no",
