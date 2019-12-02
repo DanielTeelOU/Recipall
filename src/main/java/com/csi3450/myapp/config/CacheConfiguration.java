@@ -45,13 +45,13 @@ public class CacheConfiguration {
             createCache(cm, com.csi3450.myapp.domain.PersistentToken.class.getName());
             createCache(cm, com.csi3450.myapp.domain.User.class.getName() + ".persistentTokens");
             createCache(cm, com.csi3450.myapp.domain.Recipe.class.getName());
-            createCache(cm, com.csi3450.myapp.domain.RecipeList.class.getName());
             createCache(cm, com.csi3450.myapp.domain.Comment.class.getName());
             createCache(cm, com.csi3450.myapp.domain.IngredientList.class.getName());
             createCache(cm, com.csi3450.myapp.domain.Ingredient.class.getName());
             createCache(cm, com.csi3450.myapp.domain.Ingredient.class.getName() + ".ingredients");
             createCache(cm, com.csi3450.myapp.domain.MealList.class.getName());
             createCache(cm, com.csi3450.myapp.domain.Meal.class.getName());
+            createCache(cm, com.csi3450.myapp.domain.Recipe.class.getName() + ".ingredientLists");
             // jhipster-needle-ehcache-add-entry
         };
     }

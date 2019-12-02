@@ -2,6 +2,8 @@ package com.csi3450.myapp.web.rest;
 
 import com.csi3450.myapp.RecipallApp;
 import com.csi3450.myapp.domain.Recipe;
+import com.csi3450.myapp.domain.User;
+import com.csi3450.myapp.domain.IngredientList;
 import com.csi3450.myapp.repository.RecipeRepository;
 import com.csi3450.myapp.repository.search.RecipeSearchRepository;
 import com.csi3450.myapp.web.rest.errors.ExceptionTranslator;
@@ -121,6 +123,21 @@ public class RecipeResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .name(DEFAULT_NAME)
             .score(DEFAULT_SCORE);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        recipe.setUser(user);
+        // Add required entity
+        IngredientList ingredientList;
+        if (TestUtil.findAll(em, IngredientList.class).isEmpty()) {
+            ingredientList = IngredientListResourceIT.createEntity(em);
+            em.persist(ingredientList);
+            em.flush();
+        } else {
+            ingredientList = TestUtil.findAll(em, IngredientList.class).get(0);
+        }
+        recipe.getIngredientLists().add(ingredientList);
         return recipe;
     }
     /**
@@ -139,6 +156,21 @@ public class RecipeResourceIT {
             .description(UPDATED_DESCRIPTION)
             .name(UPDATED_NAME)
             .score(UPDATED_SCORE);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        recipe.setUser(user);
+        // Add required entity
+        IngredientList ingredientList;
+        if (TestUtil.findAll(em, IngredientList.class).isEmpty()) {
+            ingredientList = IngredientListResourceIT.createUpdatedEntity(em);
+            em.persist(ingredientList);
+            em.flush();
+        } else {
+            ingredientList = TestUtil.findAll(em, IngredientList.class).get(0);
+        }
+        recipe.getIngredientLists().add(ingredientList);
         return recipe;
     }
 
@@ -197,6 +229,42 @@ public class RecipeResourceIT {
         verify(mockRecipeSearchRepository, times(0)).save(recipe);
     }
 
+
+    @Test
+    @Transactional
+    public void checkStepsIsRequired() throws Exception {
+        int databaseSizeBeforeTest = recipeRepository.findAll().size();
+        // set the field null
+        recipe.setSteps(null);
+
+        // Create the Recipe, which fails.
+
+        restRecipeMockMvc.perform(post("/api/recipes")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(recipe)))
+            .andExpect(status().isBadRequest());
+
+        List<Recipe> recipeList = recipeRepository.findAll();
+        assertThat(recipeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = recipeRepository.findAll().size();
+        // set the field null
+        recipe.setDescription(null);
+
+        // Create the Recipe, which fails.
+
+        restRecipeMockMvc.perform(post("/api/recipes")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(recipe)))
+            .andExpect(status().isBadRequest());
+
+        List<Recipe> recipeList = recipeRepository.findAll();
+        assertThat(recipeList).hasSize(databaseSizeBeforeTest);
+    }
 
     @Test
     @Transactional
@@ -372,5 +440,20 @@ public class RecipeResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].score").value(hasItem(DEFAULT_SCORE)));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Recipe.class);
+        Recipe recipe1 = new Recipe();
+        recipe1.setId(1L);
+        Recipe recipe2 = new Recipe();
+        recipe2.setId(recipe1.getId());
+        assertThat(recipe1).isEqualTo(recipe2);
+        recipe2.setId(2L);
+        assertThat(recipe1).isNotEqualTo(recipe2);
+        recipe1.setId(null);
+        assertThat(recipe1).isNotEqualTo(recipe2);
     }
 }

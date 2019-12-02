@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { filter, map } from 'rxjs/operators';
 import { JhiEventManager } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IRecipe } from 'app/shared/model/recipe.model';
+import { AccountService } from 'app/core/auth/account.service';
 import { RecipeService } from './recipe.service';
-import { RecipeDeleteDialogComponent } from './recipe-delete-dialog.component';
 
 @Component({
   selector: 'jhi-recipe',
@@ -15,14 +16,15 @@ import { RecipeDeleteDialogComponent } from './recipe-delete-dialog.component';
 })
 export class RecipeComponent implements OnInit, OnDestroy {
   recipes: IRecipe[];
+  currentAccount: any;
   eventSubscriber: Subscription;
   currentSearch: string;
 
   constructor(
     protected recipeService: RecipeService,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -36,13 +38,23 @@ export class RecipeComponent implements OnInit, OnDestroy {
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IRecipe[]>) => (this.recipes = res.body));
+        .pipe(
+          filter((res: HttpResponse<IRecipe[]>) => res.ok),
+          map((res: HttpResponse<IRecipe[]>) => res.body)
+        )
+        .subscribe((res: IRecipe[]) => (this.recipes = res));
       return;
     }
-    this.recipeService.query().subscribe((res: HttpResponse<IRecipe[]>) => {
-      this.recipes = res.body;
-      this.currentSearch = '';
-    });
+    this.recipeService
+      .query()
+      .pipe(
+        filter((res: HttpResponse<IRecipe[]>) => res.ok),
+        map((res: HttpResponse<IRecipe[]>) => res.body)
+      )
+      .subscribe((res: IRecipe[]) => {
+        this.recipes = res;
+        this.currentSearch = '';
+      });
   }
 
   search(query) {
@@ -60,6 +72,9 @@ export class RecipeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadAll();
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.registerChangeInRecipes();
   }
 
@@ -72,11 +87,6 @@ export class RecipeComponent implements OnInit, OnDestroy {
   }
 
   registerChangeInRecipes() {
-    this.eventSubscriber = this.eventManager.subscribe('recipeListModification', () => this.loadAll());
-  }
-
-  delete(recipe: IRecipe) {
-    const modalRef = this.modalService.open(RecipeDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.recipe = recipe;
+    this.eventSubscriber = this.eventManager.subscribe('recipeListModification', response => this.loadAll());
   }
 }

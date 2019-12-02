@@ -42,6 +42,7 @@
             <th scope="col" ><span>Description</span></th>
             <th scope="col" ><span>Name</span></th>
             <th scope="col" ><span>Score</span></th>
+            <th scope="col" ><span>User</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -56,6 +57,9 @@
                 <td>{{recipe.description}}</td>
                 <td>{{recipe.name}}</td>
                 <td>{{recipe.score}}</td>
+                <td>
+                    {{recipe.user?.id}}
+                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
@@ -70,7 +74,10 @@
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
-                        <button type="submit" (click)="delete(recipe)"
+                        <button type="submit"
+                                [routerLink]="['/recipe', { outlets: { popup: recipe.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>

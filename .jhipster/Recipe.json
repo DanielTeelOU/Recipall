@@ -15,7 +15,10 @@
         },
         {
             "fieldName": "steps",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "creationDate",
@@ -23,7 +26,10 @@
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "name",
@@ -37,7 +43,23 @@
             "fieldType": "Integer"
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "recipe",
+            "relationshipValidateRules": "required",
+            "relationshipName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ingredientList",
+            "otherEntityRelationshipName": "recipe",
+            "relationshipValidateRules": "required",
+            "relationshipName": "ingredientList"
+        }
+    ],
     "changelogDate": "20191201195821",
     "entityTableName": "recipe",
     "dto": "no",

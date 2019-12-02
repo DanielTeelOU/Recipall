@@ -1,4 +1,6 @@
 import { Moment } from 'moment';
+import { IUser } from 'app/core/user/user.model';
+import { IIngredientList } from 'app/shared/model/ingredient-list.model';
 
 export interface IRecipe {
   id?: number;
@@ -10,6 +12,8 @@ export interface IRecipe {
   description?: string;
   name?: string;
   score?: number;
+  user?: IUser;
+  ingredientLists?: IIngredientList[];
 }
 
 export class Recipe implements IRecipe {
@@ -22,6 +26,8 @@ export class Recipe implements IRecipe {
     public creationDate?: Moment,
     public description?: string,
     public name?: string,
-    public score?: number
+    public score?: number,
+    public user?: IUser,
+    public ingredientLists?: IIngredientList[]
   ) {}
 }

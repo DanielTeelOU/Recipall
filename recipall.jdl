@@ -2,16 +2,16 @@ entity Recipe {
 	time Integer,
     difficulty Integer,
     rating Double,
-    steps String,
+    steps String required,
     creationDate Instant,
-    description String,
+    description String required,
     name String required,
     score Integer
 }
 
-entity RecipeList {
-	// Composite entity
-}
+//entity RecipeList {
+//	// Composite entity
+//}
 
 entity Comment {
 	commentInfo String,
@@ -41,21 +41,22 @@ entity Meal {
 }
 
 relationship ManyToOne {
-	Comment{user required} to User
+	Comment{user required} to User,
 	Comment{recipe required} to Recipe
 }
 
 relationship ManyToOne {
-	Meal{user required} to User
+	Meal{user required} to User,
+	Recipe{user required} to User
 }
 
-relationship ManyToOne {
-	RecipeList{user required} to User,
-	RecipeList{recipe required} to Recipe
-}
+//relationship ManyToOne {
+//	RecipeList{user required} to User,
+//	RecipeList{recipe required} to Recipe
+//}
 
 relationship ManyToOne {
-	IngredientList{recipe required} to Recipe
+	IngredientList{recipe required} to Recipe{ingredientList required},
     IngredientList{ingredient} to Ingredient
 }
 

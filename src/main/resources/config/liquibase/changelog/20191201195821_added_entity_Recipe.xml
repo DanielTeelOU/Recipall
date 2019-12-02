@@ -26,19 +26,22 @@
                 <constraints nullable="true" />
             </column>
             <column name="steps" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="creation_date" type="datetime">
                 <constraints nullable="true" />
             </column>
             <column name="description" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="score" type="integer">
                 <constraints nullable="true" />
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
@@ -53,7 +56,7 @@
     <!--
         Load sample data generated with Faker.js
         - This data can be easily edited using a CSV editor (or even MS Excel) and
-          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+          is located in the 'src/main/resources/config/liquibase/data' directory
         - By default this data is applied when running with the JHipster 'dev' profile.
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
@@ -72,6 +75,7 @@
             <column name="description" type="string"/>
             <column name="name" type="string"/>
             <column name="score" type="numeric"/>
+            <column name="user_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

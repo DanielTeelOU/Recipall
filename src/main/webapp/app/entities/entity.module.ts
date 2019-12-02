@@ -9,10 +9,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./recipe/recipe.module').then(m => m.RecipallRecipeModule)
       },
       {
-        path: 'recipe-list',
-        loadChildren: () => import('./recipe-list/recipe-list.module').then(m => m.RecipallRecipeListModule)
-      },
-      {
         path: 'comment',
         loadChildren: () => import('./comment/comment.module').then(m => m.RecipallCommentModule)
       },
