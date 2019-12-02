@@ -1,31 +1,58 @@
+<div>
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-recipe-heading">Create or edit a Recipe</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
-                    <label for="id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
-                </div>
+                <jhi-alert></jhi-alert>
+<!--                <div class="form-group" [hidden]="!editForm.get('id').value">-->
+<!--                    <label for="id">ID</label>-->
+<!--                    <input type="text" class="form-control" id="id" name="id" formControlName="id"-->
+<!--                        readonly />-->
+<!--                </div>-->
+
                 <div class="form-group">
-                    <label class="form-control-label" for="field_time">Time</label>
+                    <label class="form-control-label" for="field_name">Name *</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name').invalid && (editForm.get('name').dirty || editForm.get('name').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name').errors.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_description">Description *</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                           formControlName="description"/>
+                    <div *ngIf="editForm.get('description').invalid && (editForm.get('description').dirty || editForm.get('description').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description').errors.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_time">Minutes to Prepare</label>
                     <input type="number" class="form-control" name="time" id="field_time"
                            formControlName="time"/>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" for="field_difficulty">Difficulty</label>
+                    <label class="form-control-label" for="field_difficulty">Recipe Difficulty</label>
                     <input type="number" class="form-control" name="difficulty" id="field_difficulty"
                            formControlName="difficulty"/>
                 </div>
+<!--                <div class="form-group">-->
+<!--                    <label class="form-control-label" for="field_rating">Rating</label>-->
+<!--                    <input type="number" class="form-control" name="rating" id="field_rating"-->
+<!--                           formControlName="rating"/>-->
+<!--                </div>-->
                 <div class="form-group">
-                    <label class="form-control-label" for="field_rating">Rating</label>
-                    <input type="number" class="form-control" name="rating" id="field_rating"
-                           formControlName="rating"/>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="field_steps">Steps *</label>
+                    <label class="form-control-label" for="field_steps">Recipe Instructions *</label>
                     <input type="text" class="form-control" name="steps" id="field_steps"
                            formControlName="steps"/>
                     <div *ngIf="editForm.get('steps').invalid && (editForm.get('steps').dirty || editForm.get('steps').touched)">
@@ -35,54 +62,98 @@
                         </small>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="field_creationDate">Creation Date</label>
-                    <div class="d-flex">
-                        <input id="field_creationDate" type="datetime-local" class="form-control" name="creationDate" formControlName="creationDate" placeholder="YYYY-MM-DD HH:mm"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="field_description">Description *</label>
-                    <input type="text" class="form-control" name="description" id="field_description"
-                           formControlName="description"/>
-                    <div *ngIf="editForm.get('description').invalid && (editForm.get('description').dirty || editForm.get('description').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('description').errors.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="field_name">Name *</label>
-                    <input type="text" class="form-control" name="name" id="field_name"
-                           formControlName="name"/>
-                    <div *ngIf="editForm.get('name').invalid && (editForm.get('name').dirty || editForm.get('name').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('name').errors.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="field_score">Score</label>
-                    <input type="number" class="form-control" name="score" id="field_score"
-                           formControlName="score"/>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label class="form-control-label" for="field_creationDate">Creation Date</label>-->
+<!--                    <div class="d-flex">-->
+<!--                        <input id="field_creationDate" type="datetime-local" class="form-control" name="creationDate" formControlName="creationDate" placeholder="YYYY-MM-DD HH:mm"/>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="form-group">
-                    <label class="form-control-label" for="field_user">User</label>
-                    <select class="form-control" id="field_user" name="user" formControlName="user">
-                        <option *ngIf="!editForm.get('user').value" [ngValue]="null" selected></option>
-                        <option [ngValue]="userOption.id === editForm.get('user').value?.id ? editForm.get('user').value : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
-                    </select>
-                </div>
-                <div *ngIf="editForm.get('user').invalid && (editForm.get('user').dirty || editForm.get('user').touched)">
-                    <small class="form-text text-danger"
-                           *ngIf="editForm.get('user').errors.required">
-                        This field is required.
-                    </small>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label class="form-control-label" for="field_score">Score</label>-->
+<!--                    <input type="number" class="form-control" name="score" id="field_score"-->
+<!--                           formControlName="score"/>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label class="form-control-label" for="field_user">Author</label>-->
+<!--                    <select class="form-control" id="field_user" name="user" formControlName="user">-->
+<!--                        <option *ngIf="!editForm.get('user').value" [ngValue]="null" selected></option>-->
+<!--                        <option [ngValue]="userOption.id === editForm.get('user').value?.id ? editForm.get('user').value : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--                <div *ngIf="editForm.get('user').invalid && (editForm.get('user').dirty || editForm.get('user').touched)">-->
+<!--                    <small class="form-text text-danger"-->
+<!--                           *ngIf="editForm.get('user').errors.required">-->
+<!--                        This field is required.-->
+<!--                    </small>-->
+<!--                </div>-->
                 <div><span>* = required</span></div>
+            </div>
+            <br>
+            <h3 id="page-heading">
+                <span>Ingredients</span>
+                <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-ingredient-list" [routerLink]="['/ingredient-list/new']">
+                    <fa-icon [icon]="'plus'"></fa-icon>
+                    <span class="hidden-sm-down" >
+                    Add new ingredient
+                    </span>
+                </button>
+            </h3>
+            <div class="alert alert-warning" *ngIf="ingredientLists?.length === 0">
+                <span>No ingredients found</span>
+            </div>
+            <div class="table-responsive" *ngIf="ingredientLists?.length > 0">
+                <table class="table table-striped" aria-describedby="page-heading">
+                    <thead>
+                    <tr>
+<!--                        <th scope="col" ><span>ID</span></th>-->
+                        <th scope="col" ><span>Ingredient</span></th>
+<!--                        <th scope="col" ><span>Amount</span></th>-->
+<!--                        <th scope="col" ><span>Unit</span></th>-->
+                        <th scope="col" ><span>Quantity</span></th>
+<!--                        <th scope="col" ><span>Recipe</span></th>-->
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let ingredientList of ingredientLists ;trackBy: trackIngredientListId">
+<!--                        <td><a [routerLink]="['/ingredient-list', ingredientList.id, 'view' ]">{{ingredientList.id}}</a></td>-->
+                        <td>
+                            <div *ngIf="ingredientList.ingredient">
+                                <a [routerLink]="['/ingredient', ingredientList.ingredient?.id, 'view' ]" >{{ingredientList.ingredient?.name}}</a>
+                            </div>
+                        </td>
+                        <td>{{ingredientList.amount}} {{ingredientList.unit}}</td>
+<!--                        <td>-->
+<!--                            <div *ngIf="ingredientList.recipe">-->
+<!--                                <a [routerLink]="['/recipe', ingredientList.recipe?.id, 'view' ]" >{{ingredientList.recipe?.id}}</a>-->
+<!--                            </div>-->
+<!--                        </td>-->
+                        <td class="text-right">
+                            <div class="btn-group">
+<!--                                <button type="submit"-->
+<!--                                        [routerLink]="['/ingredient-list', ingredientList.id, 'view' ]"-->
+<!--                                        class="btn btn-info btn-sm">-->
+<!--                                    <fa-icon [icon]="'eye'"></fa-icon>-->
+<!--                                    <span class="d-none d-md-inline">View</span>-->
+<!--                                </button>-->
+                                <button type="button"
+                                        [routerLink]="['/ingredient-list', ingredientList.id, 'edit']"
+                                        class="btn btn-primary btn-sm">
+                                    <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                    <span class="d-none d-md-inline">Edit</span>
+                                </button>
+                                <button type="button" (click)="deleteIngredient(ingredientList)"
+                                        class="btn btn-danger btn-sm">
+                                    <fa-icon [icon]="'times'"></fa-icon>
+                                    <span class="d-none d-md-inline">Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
@@ -94,4 +165,5 @@
             </div>
         </form>
     </div>
+</div>
 </div>

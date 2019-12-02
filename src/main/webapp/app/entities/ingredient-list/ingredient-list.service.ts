@@ -12,6 +12,7 @@ type EntityArrayResponseType = HttpResponse<IIngredientList[]>;
 @Injectable({ providedIn: 'root' })
 export class IngredientListService {
   public resourceUrl = SERVER_API_URL + 'api/ingredient-lists';
+  public resourceByRecipeUrl = SERVER_API_URL + 'api/ingredient-lists/byrecipe';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/ingredient-lists';
 
   constructor(protected http: HttpClient) {}
@@ -31,6 +32,10 @@ export class IngredientListService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IIngredientList[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  queryByRecipe(id: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IIngredientList[]>(`${this.resourceByRecipeUrl}/${id}`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {

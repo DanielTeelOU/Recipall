@@ -104,9 +104,9 @@ public class IngredientListResource {
     }
 
     @GetMapping("/ingredient-lists/byrecipe/{id}")
-    public List<IngredientList> getIngredientListsByRecipe(@PathVariable Long recipeId) {
-        log.debug("REST request to get IngredientList by Recipe ID : {}", recipeId);
-        return ingredientListRepository.findByRecipeId(recipeId);
+    public List<IngredientList> getIngredientListsByRecipe(@PathVariable Long id) {
+        log.debug("REST request to get IngredientList by Recipe ID : {}", id);
+        return ingredientListRepository.findByRecipeId(id);
     }
 
     /**
