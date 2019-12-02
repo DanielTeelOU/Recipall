@@ -11,13 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,6 +62,9 @@ public class RecipeResource {
         log.debug("REST request to save Recipe : {}", recipe);
         if (recipe.getId() != null) {
             throw new BadRequestAlertException("A new recipe cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (recipe.getCreationDate() == null) {
+            recipe.setCreationDate(Instant.now());
         }
         Recipe result = recipeRepository.save(recipe);
         recipeSearchRepository.save(result);
