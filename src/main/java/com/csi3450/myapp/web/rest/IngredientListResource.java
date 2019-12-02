@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -101,6 +101,12 @@ public class IngredientListResource {
     public List<IngredientList> getAllIngredientLists() {
         log.debug("REST request to get all IngredientLists");
         return ingredientListRepository.findAll();
+    }
+
+    @GetMapping("/ingredient-lists/byrecipe/{id}")
+    public List<IngredientList> getIngredientListsByRecipe(@PathVariable Long recipeId) {
+        log.debug("REST request to get IngredientList by Recipe ID : {}", recipeId);
+        return ingredientListRepository.findByRecipeId(recipeId);
     }
 
     /**
