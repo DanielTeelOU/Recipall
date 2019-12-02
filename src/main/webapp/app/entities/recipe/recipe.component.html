@@ -33,33 +33,25 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th scope="col" ><span>ID</span></th>
+            <th scope="col" ><span>Name</span></th>
+            <th scope="col" ><span>Description</span></th>
             <th scope="col" ><span>Time</span></th>
             <th scope="col" ><span>Difficulty</span></th>
-            <th scope="col" ><span>Rating</span></th>
-            <th scope="col" ><span>Steps</span></th>
+            <th scope="col" ><span>Author</span></th>
             <th scope="col" ><span>Creation Date</span></th>
-            <th scope="col" ><span>Description</span></th>
-            <th scope="col" ><span>Name</span></th>
-            <th scope="col" ><span>Score</span></th>
-            <th scope="col" ><span>User</span></th>
-            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let recipe of recipes ;trackBy: trackId">
-                <td><a [routerLink]="['/recipe', recipe.id, 'view' ]">{{recipe.id}}</a></td>
+                <td><a [routerLink]="['/recipe', recipe.id, 'view' ]">{{recipe.name}}</a></td>
+<!--                <td>{{recipe.name}}</td>-->
+                <td>{{recipe.description}}</td>
                 <td>{{recipe.time}}</td>
                 <td>{{recipe.difficulty}}</td>
-                <td>{{recipe.rating}}</td>
-                <td>{{recipe.steps}}</td>
-                <td>{{recipe.creationDate | date:'medium'}}</td>
-                <td>{{recipe.description}}</td>
-                <td>{{recipe.name}}</td>
-                <td>{{recipe.score}}</td>
                 <td>
                     {{recipe.user?.id}}
                 </td>
+                <td>{{recipe.creationDate | date:'medium'}}</td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
