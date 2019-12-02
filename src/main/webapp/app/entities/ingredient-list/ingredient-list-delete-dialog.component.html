@@ -6,7 +6,7 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <p id="jhi-delete-ingredientList-heading">Are you sure you want to delete this Ingredient List?</p>
+        <p id="jhi-delete-ingredientList-heading">Are you sure you want to delete this ingredient? ({{ingredientList.ingredient.name}}, {{ingredientList.amount}} {{ingredientList.unit}})</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

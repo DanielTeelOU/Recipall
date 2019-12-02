@@ -8,11 +8,13 @@ import { RecipeUpdateComponent } from './recipe-update.component';
 import { RecipeDeletePopupComponent, RecipeDeleteDialogComponent } from './recipe-delete-dialog.component';
 import { recipeRoute, recipePopupRoute } from './recipe.route';
 
+import { IngredientListDeleteDialogComponent } from '../ingredient-list/ingredient-list-delete-dialog.component';
+
 const ENTITY_STATES = [...recipeRoute, ...recipePopupRoute];
 
 @NgModule({
   imports: [RecipallSharedModule, RouterModule.forChild(ENTITY_STATES)],
-  declarations: [RecipeComponent, RecipeDetailComponent, RecipeUpdateComponent, RecipeDeleteDialogComponent, RecipeDeletePopupComponent],
-  entryComponents: [RecipeDeleteDialogComponent]
+  declarations: [RecipeComponent, RecipeDetailComponent, RecipeUpdateComponent, RecipeDeleteDialogComponent, RecipeDeletePopupComponent, IngredientListDeleteDialogComponent],
+  entryComponents: [RecipeDeleteDialogComponent, IngredientListDeleteDialogComponent]
 })
 export class RecipallRecipeModule {}
