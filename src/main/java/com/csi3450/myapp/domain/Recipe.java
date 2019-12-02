@@ -1,4 +1,5 @@
 package com.csi3450.myapp.domain;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
