@@ -15,13 +15,13 @@
                            formControlName="mealName"/>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" for="field_mealDesc">Meal Desc</label>
+                    <label class="form-control-label" for="field_mealDesc">Meal Description</label>
                     <input type="text" class="form-control" name="mealDesc" id="field_mealDesc"
                            formControlName="mealDesc"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" for="field_user">User</label>
+                    <label class="form-control-label" for="field_user">Author</label>
                     <select class="form-control" id="field_user" name="user" formControlName="user">
                         <option *ngIf="!editForm.get('user').value" [ngValue]="null" selected></option>
                         <option [ngValue]="userOption.id === editForm.get('user').value?.id ? editForm.get('user').value : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>

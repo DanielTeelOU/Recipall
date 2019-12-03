@@ -33,19 +33,17 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th scope="col" ><span>ID</span></th>
-            <th scope="col" ><span>Amount</span></th>
-            <th scope="col" ><span>Unit</span></th>
+<!--            <th scope="col" ><span>ID</span></th>-->
             <th scope="col" ><span>Recipe</span></th>
             <th scope="col" ><span>Ingredient</span></th>
+            <th scope="col" ><span>Amount</span></th>
+            <th scope="col" ><span>Unit</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let ingredientList of ingredientLists ;trackBy: trackId">
-                <td><a [routerLink]="['/ingredient-list', ingredientList.id, 'view' ]">{{ingredientList.id}}</a></td>
-                <td>{{ingredientList.amount}}</td>
-                <td>{{ingredientList.unit}}</td>
+<!--                <td><a [routerLink]="['/ingredient-list', ingredientList.id, 'view' ]">{{ingredientList.id}}</a></td>-->
                 <td>
                     <div *ngIf="ingredientList.recipe">
                         <a [routerLink]="['/recipe', ingredientList.recipe?.id, 'view' ]" >{{ingredientList.recipe?.id}}</a>
@@ -56,6 +54,8 @@
                         <a [routerLink]="['/ingredient', ingredientList.ingredient?.id, 'view' ]" >{{ingredientList.ingredient?.id}}</a>
                     </div>
                 </td>
+                <td>{{ingredientList.amount}}</td>
+                <td>{{ingredientList.unit}}</td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

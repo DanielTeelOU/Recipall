@@ -33,16 +33,16 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th scope="col" ><span>ID</span></th>
+<!--            <th scope="col" ><span>ID</span></th>-->
             <th scope="col" ><span>Meal Name</span></th>
             <th scope="col" ><span>Meal Desc</span></th>
-            <th scope="col" ><span>User</span></th>
+            <th scope="col" ><span>Author</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let meal of meals ;trackBy: trackId">
-                <td><a [routerLink]="['/meal', meal.id, 'view' ]">{{meal.id}}</a></td>
+<!--                <td><a [routerLink]="['/meal', meal.id, 'view' ]">{{meal.id}}</a></td>-->
                 <td>{{meal.mealName}}</td>
                 <td>{{meal.mealDesc}}</td>
                 <td>

@@ -5,14 +5,6 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span>Amount</span></dt>
-                <dd>
-                    <span>{{ingredientList.amount}}</span>
-                </dd>
-                <dt><span>Unit</span></dt>
-                <dd>
-                    <span>{{ingredientList.unit}}</span>
-                </dd>
                 <dt><span>Recipe</span></dt>
                 <dd>
                     <div *ngIf="ingredientList.recipe">
@@ -24,6 +16,14 @@
                     <div *ngIf="ingredientList.ingredient">
                         <a [routerLink]="['/ingredient', ingredientList.ingredient?.id, 'view']">{{ingredientList.ingredient?.id}}</a>
                     </div>
+                </dd>
+                <dt><span>Amount</span></dt>
+                <dd>
+                    <span>{{ingredientList.amount}}</span>
+                </dd>
+                <dt><span>Unit</span></dt>
+                <dd>
+                    <span>{{ingredientList.unit}}</span>
                 </dd>
             </dl>
 
