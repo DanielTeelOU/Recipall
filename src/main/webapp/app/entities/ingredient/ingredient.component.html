@@ -33,7 +33,7 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th scope="col" ><span>ID</span></th>
+<!--            <th scope="col" ><span>ID</span></th>-->
             <th scope="col" ><span>Name</span></th>
             <th scope="col" ><span>Image URL</span></th>
             <th scope="col" ><span>Ingredient</span></th>
@@ -42,12 +42,12 @@
             </thead>
             <tbody>
             <tr *ngFor="let ingredient of ingredients ;trackBy: trackId">
-                <td><a [routerLink]="['/ingredient', ingredient.id, 'view' ]">{{ingredient.id}}</a></td>
-                <td>{{ingredient.name}}</td>
+                <td><a [routerLink]="['/ingredient', ingredient.id, 'view' ]">{{ingredient.name}}</a></td>
+<!--                <td>{{ingredient.id}}</td>-->
                 <td>{{ingredient.imageURL}}</td>
                 <td>
                     <div *ngIf="ingredient.ingredient">
-                        <a [routerLink]="['/ingredient', ingredient.ingredient?.id, 'view' ]" >{{ingredient.ingredient?.id}}</a>
+                        <a [routerLink]="['/ingredient', ingredient.ingredient?.id, 'view' ]" >{{ingredient.ingredient?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">
