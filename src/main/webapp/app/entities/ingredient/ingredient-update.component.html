@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-ingredient-heading">Create or edit a Ingredient</h2>
+            <h2 id="jhi-ingredient-heading">Create or edit an Ingredient</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!editForm.get('id').value">
@@ -26,13 +26,13 @@
                            formControlName="imageURL"/>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" for="field_ingredient">Ingredient</label>
-                    <select class="form-control" id="field_ingredient" name="ingredient" formControlName="ingredient">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="ingredientOption.id === editForm.get('ingredient').value?.id ? editForm.get('ingredient').value : ingredientOption" *ngFor="let ingredientOption of ingredients; trackBy: trackIngredientById">{{ingredientOption.id}}</option>
-                    </select>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label class="form-control-label" for="field_ingredient">Ingredient</label>-->
+<!--                    <select class="form-control" id="field_ingredient" name="ingredient" formControlName="ingredient">-->
+<!--                        <option [ngValue]="null"></option>-->
+<!--                        <option [ngValue]="ingredientOption.id === editForm.get('ingredient').value?.id ? editForm.get('ingredient').value : ingredientOption" *ngFor="let ingredientOption of ingredients; trackBy: trackIngredientById">{{ingredientOption.id}}</option>-->
+<!--                    </select>-->
+<!--                </div>-->
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
