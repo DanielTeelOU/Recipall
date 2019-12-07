@@ -1,34 +1,34 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { IRecipe, Recipe } from 'app/shared/model/recipe.model';
 import { RecipeService } from './recipe.service';
 import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {IIngredientList} from "app/shared/model/ingredient-list.model";
-import {IngredientListService} from "app/entities/ingredient-list/ingredient-list.service";
-import {IngredientListDeleteDialogComponent} from "app/entities/ingredient-list/ingredient-list-delete-dialog.component";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+// import {IIngredientList} from "app/shared/model/ingredient-list.model";
+// import {IngredientListService} from "app/entities/ingredient-list/ingredient-list.service";
+// import {IngredientListDeleteDialogComponent} from "app/entities/ingredient-list/ingredient-list-delete-dialog.component";
 
 @Component({
   selector: 'jhi-recipe-update',
   templateUrl: './recipe-update.component.html'
 })
-export class RecipeUpdateComponent implements OnInit, OnDestroy {
+export class RecipeUpdateComponent implements OnInit {
   isSaving: boolean;
 
   users: IUser[];
 
   eventSubscriber: Subscription;
-  ingredientLists: IIngredientList[];
+  // ingredientLists: IIngredientList[];
 
   editForm = this.fb.group({
     id: [],
@@ -40,7 +40,7 @@ export class RecipeUpdateComponent implements OnInit, OnDestroy {
     description: [null, [Validators.required]],
     name: [null, [Validators.required]],
     score: [],
-    user: [null, Validators.required]
+    user: []
   });
 
   constructor(
@@ -48,7 +48,7 @@ export class RecipeUpdateComponent implements OnInit, OnDestroy {
     protected eventManager: JhiEventManager,
     protected recipeService: RecipeService,
     protected userService: UserService,
-    protected ingredientListService: IngredientListService,
+    // protected ingredientListService: IngredientListService,
     protected activatedRoute: ActivatedRoute,
     protected modalService: NgbModal,
     private fb: FormBuilder
@@ -69,13 +69,22 @@ export class RecipeUpdateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isSaving = false;
-    this.loadAll();
-    this.registerChangeInIngredientLists();
+    this.activatedRoute.data.subscribe(({ recipe }) => {
+      this.updateForm(recipe);
+    });
+    this.userService
+      .query()
+      .pipe(
+        filter((mayBeOk: HttpResponse<IUser[]>) => mayBeOk.ok),
+        map((response: HttpResponse<IUser[]>) => response.body)
+      )
+      .subscribe((res: IUser[]) => (this.users = res), (res: HttpErrorResponse) => this.onError(res.message));
+    // this.registerChangeInIngredientLists();
   }
 
-  ngOnDestroy() {
-    this.eventManager.destroy(this.eventSubscriber);
-  }
+  // ngOnDestroy() {
+  //   this.eventManager.destroy(this.eventSubscriber);
+  // }
 
   updateForm(recipe: IRecipe) {
     this.editForm.patchValue({
@@ -90,9 +99,9 @@ export class RecipeUpdateComponent implements OnInit, OnDestroy {
       score: recipe.score,
       user: recipe.user
     });
-    this.ingredientListService.queryByRecipe(recipe.id).subscribe((res: HttpResponse<IIngredientList[]>) => {
-      this.ingredientLists = res.body;
-    });
+    // this.ingredientListService.queryByRecipe(recipe.id).subscribe((res: HttpResponse<IIngredientList[]>) => {
+    //   this.ingredientLists = res.body;
+    // });
   }
 
   previousState() {
@@ -146,17 +155,16 @@ export class RecipeUpdateComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  trackIngredientListId(index: number, item: IIngredientList) {
-    return item.id;
-  }
+  // trackIngredientListId(index: number, item: IIngredientList) {
+  //   return item.id;
+  // }
 
-  registerChangeInIngredientLists() {
-    this.eventSubscriber = this.eventManager.subscribe('ingredientListListModification', () => this.loadAll());
-  }
+  // registerChangeInIngredientLists() {
+  //   this.eventSubscriber = this.eventManager.subscribe('ingredientListListModification', () => this.loadAll());
+  // }
 
-  deleteIngredient(ingredientList: IIngredientList) {
-    const modalRef = this.modalService.open(IngredientListDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.ingredientList = ingredientList;
-  }
-
+  // deleteIngredient(ingredientList: IIngredientList) {
+  //   const modalRef = this.modalService.open(IngredientListDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+  //   modalRef.componentInstance.ingredientList = ingredientList;
+  // }
 }
